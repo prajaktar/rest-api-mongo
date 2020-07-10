@@ -30,6 +30,22 @@ dependencies {
 	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
 }
 
+task gitExecutableHooks() {
+	Runtime.getRuntime().exec("chmod -R +x .git/hooks/")
+}
+
+task installGitHooks(type: Copy) {
+	from new File(rootProject.rootDir, 'pre-push')
+	into { new File(rootProject.rootDir, '.git/hooks') }
+	fileMode 0777
+}
+
+afterEvaluate {
+	gitExecutableHooks.dependsOn installGitHooks
+	check.dependsOn gitExecutableHooks
+}
+
+
 jacoco {
 	toolVersion = "0.8.5"
 	reportsDir = file("$buildDir/customJacocoReportDir")

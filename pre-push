@@ -1,0 +1,10 @@
+gradle jacocoTestCoverageVerification
+
+if [ $? -eq 0 ]
+then
+    echo "All tests pass."
+    exit 0
+else
+    exit 1
+fi
+
